@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "front": "Primer principio de la termodinámica (sistema cerrado)",
+    "back": "$$\\Delta U = Q - W$$",
+    "tema": "Primer principio",
+    "interval": 1,
+    "repetitions": 0,
+    "easiness": 2.5,
+    "nextReview": "2026-05-12"
+  },
+  {
+    "id": 2,
+    "front": "Definición de entalpía",
+    "back": "$$H = U + PV$$",
+    "tema": "Primer principio",
+    "interval": 1,
+    "repetitions": 0,
+    "easiness": 2.5,
+    "nextReview": "2026-05-12"
+  },
+  {
+    "id": 3,
+    "front": "Rendimiento térmico de Carnot",
+    "back": "$$\\eta_{Carnot} = 1 - \\frac{T_c}{T_h}$$",
+    "tema": "Segundo principio",
+    "interval": 1,
+    "repetitions": 0,
+    "easiness": 2.5,
+    "nextReview": "2026-05-12"
+  },
+  {
+    "id": 4,
+    "front": "Trabajo en proceso politrópico (gas ideal)",
+    "back": "$$W = \\frac{P_2 V_2 - P_1 V_1}{1 - n} = \\frac{mR(T_2 - T_1)}{1 - n}$$",
+    "tema": "Primer principio",
+    "interval": 1,
+    "repetitions": 0,
+    "easiness": 2.5,
+    "nextReview": "2026-05-12"
+  },
+  {
+    "id": 5,
+    "front": "Entropía de un proceso reversible",
+    "back": "$$\\Delta S = \\int \\frac{\\delta Q_{rev}}{T}$$",
+    "tema": "Segundo principio",
+    "interval": 1,
+    "repetitions": 0,
+    "easiness": 2.5,
+    "nextReview": "2026-05-12"
+  }
+]

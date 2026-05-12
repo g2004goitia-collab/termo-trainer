@@ -1,0 +1,34 @@
+[
+  {
+    "id": "otto",
+    "nombre": "Otto",
+    "procesos": ["1→2 compresión isentrópica", "2→3 calor a volumen cte", "3→4 expansión isentrópica", "4→1 rechazo de calor a volumen cte"],
+    "formula_rendimiento": "$$\\eta = 1 - \\frac{1}{r^{\\gamma-1}}$$",
+    "sustancia": "Gas ideal",
+    "aplicacion": "Motores de gasolina"
+  },
+  {
+    "id": "diesel",
+    "nombre": "Diesel",
+    "procesos": ["1→2 compresión isentrópica", "2→3 calor a presión cte", "3→4 expansión isentrópica", "4→1 rechazo de calor a volumen cte"],
+    "formula_rendimiento": "$$\\eta = 1 - \\frac{1}{r^{\\gamma-1}} \\cdot \\frac{r_c^\\gamma - 1}{\\gamma(r_c - 1)}$$",
+    "sustancia": "Gas ideal",
+    "aplicacion": "Motores diésel"
+  },
+  {
+    "id": "brayton",
+    "nombre": "Brayton",
+    "procesos": ["1→2 compresión isentrópica", "2→3 calor a presión cte", "3→4 expansión isentrópica", "4→1 rechazo de calor a presión cte"],
+    "formula_rendimiento": "$$\\eta = 1 - \\frac{1}{r_p^{(\\gamma-1)/\\gamma}}$$",
+    "sustancia": "Gas ideal",
+    "aplicacion": "Turbinas de gas"
+  },
+  {
+    "id": "rankine",
+    "nombre": "Rankine",
+    "procesos": ["1→2 bombeo isentrópico", "2→3 calor a presión cte", "3→4 expansión isentrópica", "4→1 condensación a presión cte"],
+    "formula_rendimiento": "$$\\eta = \\frac{w_{turbina} - w_{bomba}}{q_{caldera}}$$",
+    "sustancia": "Agua / vapor",
+    "aplicacion": "Centrales térmicas"
+  }
+]
