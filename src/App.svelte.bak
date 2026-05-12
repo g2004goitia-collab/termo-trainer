@@ -1,0 +1,140 @@
+<script>
+  import Dashboard from './lib/Dashboard.svelte'
+  import Flashcards from './lib/Flashcards.svelte'
+  import Problemas from './lib/Problemas.svelte'
+  import Simulador from './lib/Simulador.svelte'
+
+  const tabs = [
+    { id: 'dashboard', label: 'Dashboard', component: Dashboard },
+    { id: 'flashcards', label: 'Flashcards', component: Flashcards },
+    { id: 'problemas', label: 'Problemas', component: Problemas },
+    { id: 'simulador', label: 'Simulador', component: Simulador },
+  ]
+
+  let active = 'dashboard'
+
+  function setTheme(next) {
+    document.documentElement.setAttribute('data-theme', next)
+    localStorage.setItem('theme', next)
+    updateToggleLabel()
+  }
+
+  function toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme') || 'dark'
+    setTheme(current === 'light' ? 'dark' : 'light')
+  }
+
+  function updateToggleLabel() {
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark'
+    const btn = document.getElementById('theme-btn')
+    if (btn) btn.textContent = theme === 'light' ? '🌙' : '☀️'
+  }
+
+  $: activeTab = tabs.find(t => t.id === active)
+  $: if (typeof window !== 'undefined') updateToggleLabel()
+</script>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <div class="logo">Termo <span>Trainer</span></div>
+    <div class="header-actions">
+      <nav class="tab-nav">
+        {#each tabs as tab}
+          <button
+            class="tab-btn"
+            class:active={active === tab.id}
+            on:click={() => active = tab.id}
+          >
+            {tab.label}
+          </button>
+        {/each}
+      </nav>
+      <button id="theme-btn" class="theme-toggle" on:click={toggleTheme} aria-label="Cambiar tema">
+        ☀️
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <svelte:component this={activeTab.component} />
+</main>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+  }
+  .header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .logo {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--text);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .logo span { color: var(--accent-bright); }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .tab-nav {
+    display: flex;
+    gap: 0.25rem;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.25rem;
+  }
+  .tab-btn {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.45rem 0.85rem;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    transition: background 0.2s, color 0.2s;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active {
+    background: var(--accent);
+    color: #fff;
+  }
+  .theme-toggle {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 0.4rem 0.7rem;
+    line-height: 1;
+    transition: border-color 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--accent-bright); }
+
+  @media (max-width: 640px) {
+    .header-inner { flex-direction: column; align-items: stretch; }
+    .header-actions { justify-content: space-between; }
+    .tab-nav { flex: 1; overflow-x: auto; }
+  }
+</style>

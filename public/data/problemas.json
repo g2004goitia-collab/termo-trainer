@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "titulo": "Compresor isentrópico",
+    "enunciado": "Aire entra a un compresor a $P_1 = 100$ kPa, $T_1 = 300$ K. La relación de presiones es $r_p = 8$. Calcule la temperatura de salida suponiendo proceso isentrópico con $\\gamma = 1.4$.",
+    "dificultad": "Media",
+    "tema": "Sistemas abiertos",
+    "estado": "pendiente",
+    "pasos": [
+      "Para un proceso isentrópico: $T_2 / T_1 = (P_2 / P_1)^{(\\gamma-1)/\\gamma}$",
+      "Sustituir: $T_2 = 300 \\cdot 8^{0.4/1.4}$",
+      "Resultado: $T_2 \\approx 543.4$ K"
+    ]
+  },
+  {
+    "id": 2,
+    "titulo": "Rendimiento Ciclo Otto",
+    "enunciado": "Un ciclo Otto ideal tiene una relación de compresión $r = 9$. Calcule el rendimiento térmico suponiendo $\\gamma = 1.4$.",
+    "dificultad": "Fácil",
+    "tema": "Ciclos",
+    "estado": "pendiente",
+    "pasos": [
+      "Fórmula: $\\eta_{Otto} = 1 - \\frac{1}{r^{\\gamma-1}}$",
+      "Sustituir: $\\eta = 1 - \\frac{1}{9^{0.4}}$",
+      "Resultado: $\\eta \\approx 58.5\\%$"
+    ]
+  },
+  {
+    "id": 3,
+    "titulo": "Transferencia de calor por conducción",
+    "enunciado": "Una pared de $L = 0.2$ m de espesor tiene conductividad $k = 0.8$ W/m·K. Las temperaturas de las caras son $T_1 = 300$ °C y $T_2 = 50$ °C. Calcule el flujo de calor por unidad de área.",
+    "dificultad": "Fácil",
+    "tema": "Transferencia de calor",
+    "estado": "pendiente",
+    "pasos": [
+      "Ley de Fourier: $q = -k \\frac{dT}{dx}$",
+      "Integrar: $q = k \\frac{T_1 - T_2}{L}$",
+      "Resultado: $q = 0.8 \\cdot \\frac{250}{0.2} = 1000$ W/m²"
+    ]
+  }
+]
