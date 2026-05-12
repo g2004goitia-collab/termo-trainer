@@ -1,6 +1,7 @@
 <script>
   import { onMount } from 'svelte'
   import katex from 'katex'
+  import { temas } from './data/temas.js'
   let Plotly
   async function getPlotly() {
     if (!Plotly) {
@@ -360,130 +361,18 @@
     { id: 10, titulo: 'Conducción en pared compuesta', enunciado: 'Una pared de 0.2 m² está formada por ladrillo ($k=0.72$ W/m·K, 10 cm) y aislante ($k=0.04$ W/m·K, 5 cm). La temperatura interior es $25$ °C y la exterior $-5$ °C. Calcule la pérdida de calor.', dificultad: 'Media', tema: 'Transferencia de calor', pasos: ['Resistencias en serie: $R = L_1/(k_1A) + L_2/(k_2A)$', '$R = 0.10/(0.72\\cdot0.2) + 0.05/(0.04\\cdot0.2) = 0.694 + 6.25 = 6.944$ K/W', '$\\dot{Q} = \\Delta T / R = 30 / 6.944 \\approx 4.32$ W'] },
     { id: 11, titulo: 'Tobera convergente-divergente (Mach)', enunciado: 'Aire ($\\gamma=1.4$) fluye por una tobera con $Ma_1 = 0.3$ en la entrada. Calcule la relación de áreas $A/A^*$ y la relación de presiones $P/P^*$.', dificultad: 'Difícil', tema: 'Sistemas abiertos', pasos: ['Relación de áreas: $A/A^* = \\frac{1}{Ma}\\left(\\frac{2}{\\gamma+1}(1+\\frac{\\gamma-1}{2}Ma^2)\\right)^{(\\gamma+1)/(2(\\gamma-1))}$', 'Sustituir $Ma=0.3$: $A/A^* \\approx \\frac{1}{0.3}(\\frac{2}{2.4}(1+0.2\\cdot0.09))^{3} \\approx 2.04$', 'Relación de presiones: $P/P_0 = (1+\\frac{\\gamma-1}{2}Ma^2)^{-\\gamma/(\\gamma-1)}$', '$P/P^* = \\frac{P/P_0}{(P/P_0)^*}$ donde $(P/P_0)^* = (2/(\\gamma+1))^{\\gamma/(\\gamma-1)} \\approx 0.528$', '$P/P_0(0.3) \\approx 0.939$, luego $P/P^* \\approx 0.939/0.528 \\approx 1.78$'] },
     { id: 12, titulo: 'Ciclo Brayton con regeneración', enunciado: 'Un ciclo Brayton ideal tiene $r_p = 10$, $T_1 = 300$ K, $T_3 = 1400$ K, $\\gamma = 1.4$. Calcule el rendimiento con regeneración perfecta ($\\epsilon = 1$).', dificultad: 'Difícil', tema: 'Ciclos', pasos: ['$T_2 = T_1 \\cdot r_p^{(\\gamma-1)/\\gamma} = 300 \\cdot 10^{0.2857} \\approx 579.2$ K', '$T_4 = T_3 / r_p^{(\\gamma-1)/\\gamma} = 1400 / 10^{0.2857} \\approx 725.1$ K', 'Con regeneración perfecta: $T_5 = T_4$ y $T_6 = T_2$', '$q_{in} = c_p(T_3 - T_5) = 1.005(1400 - 725.1) \\approx 678.3$ kJ/kg', '$w_{neto} = c_p[(T_3-T_4)-(T_2-T_1)] = 1.005[(1400-725.1)-(579.2-300)] \\approx 393.2$ kJ/kg', '$\\eta = w_{neto}/q_{in} \\approx 57.9\\%$'] },
+    { id: 13, titulo: 'Presión manométrica en un tanque', enunciado: 'Un manómetro conectado a un tanque de gas indica $P_{man} = 350$ kPa. La presión atmosférica local es $P_{atm} = 101.3$ kPa. Calcule la presión absoluta y la presión equivalente en bar.', dificultad: 'Fácil', tema: 'Intro', pasos: ['$P_{abs} = P_{man} + P_{atm} = 350 + 101.3 = 451.3$ kPa', 'Conversión: $1$ bar $= 100$ kPa', '$P_{abs} = 4.513$ bar'] },
+    { id: 14, titulo: 'Calidad de una mezcla líquido-vapor', enunciado: 'Un recipiente de $V = 0.5$ m³ contiene 4 kg de agua a $P = 200$ kPa. Sabiendo que $v_f = 0.001061$ m³/kg y $v_g = 0.8857$ m³/kg a esa presión, determine la calidad y el volumen ocupado por cada fase.', dificultad: 'Media', tema: 'Cambios de fase', pasos: ['Volumen específico de la mezcla: $v = V/m = 0.5/4 = 0.125$ m³/kg', 'Despejar calidad: $v = v_f + x(v_g - v_f)$', '$0.125 = 0.001061 + x(0.8857 - 0.001061)$ → $x \approx 0.140$ (14%)', '$V_{vapor} = m \cdot x \cdot v_g = 4 \cdot 0.140 \cdot 0.8857 \approx 0.496$ m³', '$V_{líquido} = V - V_{vapor} \approx 0.004$ m³'] },
+    { id: 15, titulo: 'Gas real con Van der Waals', enunciado: 'Un mol de CO₂ ocupa un volumen de $0.5$ L a $300$ K. Calcule la presión usando la ecuación de Van der Waals ($a = 0.364$ Pa·m⁶/mol², $b = 4.27 \times 10^{-5}$ m³/mol) y compárela con el gas ideal.', dificultad: 'Media', tema: 'Cambios de fase', pasos: ['Gas ideal: $P = nRT/V = 1 \cdot 8.314 \cdot 300 / (0.5 \times 10^{-3}) = 4.99$ MPa', 'Van der Waals: $P = \frac{RT}{v-b} - \frac{a}{v^2}$', '$v = 0.5 \times 10^{-3}$ m³/mol', '$P = \frac{8.314 \cdot 300}{0.5 \times 10^{-3} - 4.27 \times 10^{-5}} - \frac{0.364}{(0.5 \times 10^{-3})^2}$', '$P \approx 5.44 - 1.46 = 3.98$ MPa', 'Diferencia: el gas ideal sobrestima la presión en ~25% por no considerar fuerzas intermoleculares'] },
+    { id: 16, titulo: 'Proceso politrópico de compresión', enunciado: 'Se comprime aire desde $P_1 = 100$ kPa, $T_1 = 300$ K hasta $P_2 = 800$ kPa siguiendo un proceso politrópico con $n = 1.3$. Calcule la temperatura final, el trabajo específico y el calor transferido ($R = 0.287$ kJ/kg·K, $c_v = 0.718$ kJ/kg·K).', dificultad: 'Difícil', tema: 'Primer principio', pasos: ['$T_2 = T_1 (P_2/P_1)^{(n-1)/n} = 300 \cdot 8^{0.3/1.3} \approx 470.6$ K', '$w = \frac{R(T_2-T_1)}{1-n} = \frac{0.287(470.6-300)}{1-1.3} \approx -163.2$ kJ/kg (trabajo negativo: entra)', '$\Delta u = c_v(T_2-T_1) = 0.718(470.6-300) \approx 122.5$ kJ/kg', '$q = \Delta u + w = 122.5 - 163.2 = -40.7$ kJ/kg (calor sale)'] },
+    { id: 17, titulo: 'Entropía generada en expansión libre', enunciado: 'Una división separa dos compartimentos de igual volumen en un recipiente aislado. Uno contiene 1 mol de gas ideal a $300$ K y el otro está vacío. Se retira la división. Calcule la entropía generada.', dificultad: 'Media', tema: 'Segundo principio', pasos: ['Expansión libre: $Q = 0$, $W = 0$ → $\Delta U = 0$ → $T_f = T_i = 300$ K', 'Para gas ideal: $\Delta S = nR \ln(V_2/V_1) = 1 \cdot 8.314 \cdot \ln(2)$', '$\Delta S \approx 5.76$ J/K', 'Como el sistema está aislado: $S_{gen} = \Delta S_{sis} = 5.76$ J/K > 0 (irreversible)'] },
+    { id: 18, titulo: 'Ciclo Diesel ideal', enunciado: 'Un ciclo Diesel ideal tiene relación de compresión $r = 18$ y relación de corte $r_c = 2.2$. La temperatura inicial es $T_1 = 300$ K. Calcule el rendimiento térmico ($\gamma = 1.4$).', dificultad: 'Media', tema: 'Ciclos', pasos: ['$\eta_{Diesel} = 1 - \frac{1}{r^{\gamma-1}} \cdot \frac{r_c^{\gamma}-1}{\gamma(r_c-1)}$', '$r^{\gamma-1} = 18^{0.4} \approx 3.18$', '$\frac{r_c^{\gamma}-1}{\gamma(r_c-1)} = \frac{2.2^{1.4}-1}{1.4(2.2-1)} = \frac{2.85-1}{1.68} \approx 1.10$', '$\eta = 1 - \frac{1}{3.18} \cdot 1.10 = 1 - 0.346 = 0.654$ (65.4%)'] },
+    { id: 19, titulo: 'Mezcla de gases y presiones parciales', enunciado: 'Un recipiente de $2$ m³ contiene una mezcla de $0.5$ kg de N₂ y $0.3$ kg de O₂ a $300$ K. Calcule la presión total y las presiones parciales ($R_{N2} = 0.297$ kJ/kg·K, $R_{O2} = 0.260$ kJ/kg·K).', dificultad: 'Media', tema: 'Mezclas', pasos: ['$P_{N2} = m_{N2} R_{N2} T / V = 0.5 \cdot 297 \cdot 300 / 2 = 22.28$ kPa', '$P_{O2} = m_{O2} R_{O2} T / V = 0.3 \cdot 260 \cdot 300 / 2 = 11.70$ kPa', '$P_{total} = P_{N2} + P_{O2} = 33.98$ kPa', 'Fracciones molares: $y_{N2} = 22.28/33.98 \approx 0.656$, $y_{O2} \approx 0.344$'] },
+    { id: 20, titulo: 'Aire húmedo — Humedad específica', enunciado: 'Aire a $30$ °C y $P = 100$ kPa tiene una humedad relativa $\phi = 60$%. La presión de saturación a $30$ °C es $P_g = 4.25$ kPa. Calcule la humedad específica y la presión parcial del vapor.', dificultad: 'Media', tema: 'Psicrometría', pasos: ['$P_v = \phi \cdot P_g = 0.60 \cdot 4.25 = 2.55$ kPa', '$\omega = 0.622 \frac{P_v}{P - P_v} = 0.622 \frac{2.55}{100 - 2.55}$', '$\omega \approx 0.0163$ kg vapor/kg aire seco (16.3 g/kg)'] },
+    { id: 21, titulo: 'Radiación entre placas paralelas', enunciado: 'Dos placas grandes paralelas están a $T_1 = 800$ K y $T_2 = 500$ K. Ambas son cuerpos negros. Calcule el flujo de calor neto por radiación entre ellas ($\sigma = 5.67 \times 10^{-8}$ W/m²·K⁴).', dificultad: 'Fácil', tema: 'Transferencia de calor', pasos: ['Ley de Stefan-Boltzmann para intercambio neto entre cuerpos negros:', '$q = \sigma (T_1^4 - T_2^4)$', '$q = 5.67 \times 10^{-8} (800^4 - 500^4)$', '$q = 5.67 \times 10^{-8} (4.096 \times 10^{11} - 6.25 \times 10^{10})$', '$q = 5.67 \times 10^{-8} \cdot 3.471 \times 10^{11} \approx 19.68$ kW/m²'] },
+    { id: 22, titulo: 'Cálculo de área crítica en tobera', enunciado: 'Aire ($\gamma = 1.4$, $R = 287$ J/kg·K) fluye isentrópicamente por una tobera desde $P_0 = 500$ kPa, $T_0 = 400$ K hasta $P = 100$ kPa. El flujo másico es $\dot{m} = 2$ kg/s. Calcule el área de la garganta ($A^*$) y el área de salida.', dificultad: 'Difícil', tema: 'Sistemas abiertos', pasos: ['En la garganta: $Ma = 1$, $T^* = T_0 \frac{2}{\gamma+1} = 400 \cdot \frac{2}{2.4} = 333.3$ K', '$P^* = P_0 (2/(\gamma+1))^{\gamma/(\gamma-1)} = 500 \cdot 0.528 = 264$ kPa', '$\rho^* = P^*/(RT^*) = 264000/(287 \cdot 333.3) = 2.76$ kg/m³', '$V^* = a^* = \sqrt{\gamma RT^*} = \sqrt{1.4 \cdot 287 \cdot 333.3} \approx 366$ m/s', '$A^* = \dot{m}/(\rho^* V^*) = 2/(2.76 \cdot 366) \approx 1.98 \times 10^{-3}$ m² = 19.8 cm²', 'A la salida: $Ma_{salida} \approx 1.71$ (de tablas isentrópicas para $P/P_0 = 0.2$)', '$A_{salida} = A^* \cdot (A/A^*)_{Ma=1.71} \approx 1.98 \cdot 1.35 \approx 2.67$ cm²'] },
   ]
 
-  /* temas data */
-  const temas = [
-    {
-      id: 'Intro', nombre: 'Introducción y Conceptos Básicos',
-      teoría: [
-        'La termodinámica estudia la energía, sus transformaciones y sus interacciones con la materia.',
-        'Un sistema termodinámico es la cantidad de materia o región del espacio sometida a estudio.',
-        'Propiedades intensivas no dependen de la masa (T, P, ρ). Propiedades extensivas sí (V, U, H).',
-        'Un proceso es una transformación de un estado de equilibrio a otro. Un ciclo regresa al estado inicial.',
-        'Presión absoluta = presión manométrica + presión atmosférica. Siempre usar P_abs en ecuaciones.'
-      ],
-      formulas: ['P_{abs} = P_{man} + P_{atm}', '\\rho = \\frac{m}{V}', '\\gamma = \\rho g', 'v = \\frac{V}{m}']
-    },
-    {
-      id: 'Cambios de fase', nombre: 'Cambios de Fase y Propiedades de Sustancias Puras',
-      teoría: [
-        'Una sustancia pura tiene composición química uniforme e invariable (agua, N₂, CO₂).',
-        'En la región saturada coexisten líquido y vapor. La calidad x indica la fracción de vapor.',
-        'El punto crítico es el estado donde líquido y gas se vuelven indistinguibles.',
-        'Para líquidos comprimidos: v ≈ v_f, h ≈ h_f. Para vapor sobrecalentado se usan tablas o el gas ideal.',
-        'La ecuación de Clausius-Clapeyron relaciona la pendiente de la curva de saturación con h_fg y v_fg.'
-      ],
-      formulas: ['x = \\frac{m_{vapor}}{m_{total}}', 'v = v_f + x(v_g - v_f)', 'h = h_f + x h_{fg}', '\\frac{dP}{dT} = \\frac{h_{fg}}{T v_{fg}}', 'PV = mRT']
-    },
-    {
-      id: 'Primer principio', nombre: 'Primer Principio de la Termodinámica',
-      teoría: [
-        'El primer principio es la conservación de la energía: la energía no se crea ni se destruye, solo se transforma.',
-        'Para un sistema cerrado: ΔU = Q − W. Signo convencional: Q>0 entra, W>0 sale.',
-        'La entalpía H = U + PV es útil en procesos a presión constante porque Q_p = ΔH.',
-        'Trabajo de frontera: W = ∫ P dV. Proceso isocórico → W=0. Proceso isobárico → W = PΔV.',
-        'Para gas ideal en proceso isotermo: W = mRT ln(V₂/V₁). Proceso politrópico: W = (P₂V₂ − P₁V₁)/(1−n).'
-      ],
-      formulas: ['\\Delta U = Q - W', 'H = U + PV', 'W_b = \\int_{1}^{2} P \\, dV', '\\Delta U = m c_v \\Delta T', '\\Delta H = m c_p \\Delta T', 'c_p - c_v = R']
-    },
-    {
-      id: 'Segundo principio', nombre: 'Segundo Principio y Entropía',
-      teoría: [
-        'El segundo principio establece la dirección de los procesos y el límite de conversión de calor en trabajo.',
-        'Enunciado de Kelvin-Planck: imposible una máquina térmica con rendimiento 100% operando en un ciclo.',
-        'Enunciado de Clausius: el calor no fluye espontáneamente de un cuerpo frío a uno caliente.',
-        'La entropía es una propiedad que mide la dispersión de la energía. Para un proceso reversible: dS = δQ_rev/T.',
-        'El principio de aumento de entropía afirma que la entropía del universo nunca disminuye: ΔS_universo ≥ 0.'
-      ],
-      formulas: ['\\eta_{Carnot} = 1 - \\frac{T_c}{T_h}', '\\Delta S = \\int \\frac{\\delta Q_{rev}}{T}', '\\oint \\frac{\\delta Q}{T} \\le 0', 'S_{gen} = \\Delta S_{sis} + \\Delta S_{ent} \\ge 0', 'COP_{MR} = \\frac{T_c}{T_h - T_c}']
-    },
-    {
-      id: 'Ciclos', nombre: 'Ciclos Termodinámicos',
-      teoría: [
-        'Un ciclo termodinámico es una serie de procesos que regresan al estado inicial, produciendo trabajo neto.',
-        'Ciclo Otto: motor de encendido por chispa. Procesos: compresión isentrópica, calor a V cte, expansión isentrópica, rechazo a V cte.',
-        'Ciclo Diesel: motor de encendido por compresión. La combustión es a presión aproximadamente constante (corte).',
-        'Ciclo Brayton: turbina de gas. Compresión y expansión isentrópicas, calor y rechazo a P cte.',
-        'Ciclo Rankine: central térmica de vapor. Bomba, caldera, turbina y condensador. Usa cambio de fase del agua.'
-      ],
-      formulas: ['\\eta_{Otto} = 1 - \\frac{1}{r^{\\gamma-1}}', '\\eta_{Diesel} = 1 - \\frac{1}{r^{\\gamma-1}} \\cdot \\frac{r_c^{\\gamma}-1}{\\gamma(r_c-1)}', '\\eta_{Brayton} = 1 - \\frac{1}{r_p^{(\\gamma-1)/\\gamma}}', 'COP_{BC} = \\frac{1}{1 - T_c/T_h}']
-    },
-    {
-      id: 'Sistemas abiertos', nombre: 'Sistemas Abiertos y Flujo de Fluidos',
-      teoría: [
-        'En un sistema abierto (volumen de control) hay transferencia de masa a través de la frontera.',
-        'Conservación de masa en régimen estacionario: ṁ_entra = ṁ_sale.',
-        'Balance de energía en régimen estacionario: Q̇ − Ẇ = Σṁ_s h_s − Σṁ_e h_e.',
-        'La entalpía de estancamiento h₀ = h + V²/2 representa la energía total por unidad de masa.',
-        'En toberas y difusores no hay trabajo ni transferencia de calor significativa: h₁ + V₁²/2 = h₂ + V₂²/2.',
-        'Flujo isoentrópico en toberas: la velocidad aumenta cuando la presión disminuye. A/A* depende del número de Mach.'
-      ],
-      formulas: ['\\dot{m}_{entra} = \\dot{m}_{sale}', '\\dot{Q} - \\dot{W} = \\sum \\dot{m}_{s}h_{s} - \\sum \\dot{m}_{e}h_{e}', 'h_0 = h + \\frac{V^2}{2}', '\\frac{P^*}{P_0} = \\left(\\frac{2}{\\gamma+1}\\right)^{\\gamma/(\\gamma-1)}', 'Ma = \\frac{V}{a}']
-    },
-    {
-      id: 'Transferencia de calor', nombre: 'Transferencia de Calor',
-      teoría: [
-        'Conducción: transferencia de calor por contacto molecular (sólidos y fluidos en reposo).',
-        'Convección: transferencia por movimiento macroscópico del fluido. Puede ser forzada o natural.',
-        'Radiación: transferencia por ondas electromagnéticas. No necesita medio material.',
-        'La resistencia térmica permite analizar conducción en paredes compuestas como un circuito eléctrico.',
-        'Los números adimensionales (Re, Pr, Nu) caracterizan el régimen de flujo y la transferencia de calor convectiva.'
-      ],
-      formulas: ['\\dot{Q} = -kA\\frac{dT}{dx}', '\\dot{Q} = hA(T_s - T_\\infty)', '\\dot{Q} = \\varepsilon \\sigma A T^4', 'R_{total} = \\sum \\frac{L_i}{k_i A}', 'Nu = \\frac{hL_c}{k}', 'Re = \\frac{VL}{\\nu}', 'Pr = \\frac{c_p \\mu}{k}']
-    },
-    {
-      id: 'Mezclas', nombre: 'Mezclas de Gases Ideales',
-      teoría: [
-        'Una mezcla de gases ideales se comporta como un gas ideal si cada componente se comporta idealmente.',
-        'Ley de Dalton: la presión total es la suma de las presiones parciales que cada gas ejercería solo.',
-        'La presión parcial de un componente: P_i = y_i P_total, donde y_i es la fracción molar.',
-        'Las propiedades extensivas de la mezcla (U, H, S) son la suma ponderada de las propiedades de cada componente.'
-      ],
-      formulas: ['P_{total} = \\sum P_i', 'P_i = y_i P_{total}', 'y_i = \\frac{N_i}{N_{total}}', 'x_i = \\frac{m_i}{m_{total}}']
-    },
-    {
-      id: 'Psicrometría', nombre: 'Psicrometría y Aire Húmedo',
-      teoría: [
-        'El aire húmedo es una mezcla de aire seco y vapor de agua. Se modela como gas ideal.',
-        'Humedad específica ω: masa de vapor por unidad de masa de aire seco.',
-        'Humedad relativa φ: relación entre la presión parcial del vapor y la presión de saturación a la misma T.',
-        'Temperatura de bulbo húmedo: temperatura que alcanza el aire al saturarse adiabáticamente.',
-        'El diagrama psicrométrico relaciona T, φ, ω, h y volumen específico del aire húmedo.'
-      ],
-      formulas: ['\\omega = 0.622 \\frac{P_v}{P - P_v}', '\\phi = \\frac{P_v}{P_g}', 'h = h_a + \\omega h_g']
-    },
-    {
-      id: 'Exergía', nombre: 'Exergía y Análisis de Disponibilidad',
-      teoría: [
-        'La exergía es la máxima cantidad de trabajo útil obtenible de un sistema al equilibrarse con el entorno.',
-        'La anergía es la parte de la energía que no puede convertirse en trabajo útil.',
-        'La exergía se destruye por irreversibilidades (fricción, transferencia de calor con ΔT finito, mezcla).',
-        'El balance de exergía es análogo al balance de energía pero incluye la destrucción de exergía.'
-      ],
-      formulas: ['X_{destroyed} = T_0 S_{gen}', '\\eta_{II} = \\frac{X_{recovered}}{X_{supplied}}', '\\Delta X = X_{in} - X_{out} - X_{destroyed}']
-    },
-    {
-      id: 'Propulsión', nombre: 'Propulsión Aeroespacial',
-      teoría: [
-        'Los motores de reacción (turborreactores, turhofans) se basan en el ciclo Brayton modificado.',
-        'El empuje se genera por la aceleración de una masa de fluido: F = ṁ(V_salida − V_entrada) + (P_s−P_e)A_s.',
-        'La eficiencia propulsiva mide qué fracción del trabajo cinético generado se transfiere a la aeronave.',
-        'Un turbofan divide el flujo de aire en un núcleo (hot) y un ducto de bypass (cold), reduciendo el consumo específico.'
-      ],
-      formulas: ['F = \\dot{m}(V_s - V_e) + (P_s - P_e)A_s', '\\eta_p = \\frac{2}{1 + V_s/V_e}', 'TSFC = \\frac{\\dot{m}_{combustible}}{F}']
-    }
-  ]
 
   /* helpers */
   function toggleTheme() {
@@ -801,6 +690,45 @@
             {/each}
           </div>
         </div>
+
+        {#if temaActivo.tablas && temaActivo.tablas.length}
+          {#each temaActivo.tablas as tabla}
+            <div class="tema-section">
+              <h3>{tabla.titulo}</h3>
+              <div class="tema-table-wrap">
+                <table class="tema-table">
+                  <thead>
+                    <tr>
+                      {#each tabla.headers as h}
+                        <th>{h}</th>
+                      {/each}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {#each tabla.rows as row}
+                      <tr>
+                        {#each row as cell}
+                          <td use:renderKatex={cell}></td>
+                        {/each}
+                      </tr>
+                    {/each}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          {/each}
+        {/if}
+
+        {#if temaActivo.aplicaciones && temaActivo.aplicaciones.length}
+          <div class="tema-section">
+            <h3>Aplicaciones prácticas</h3>
+            <ul class="tema-list">
+              {#each temaActivo.aplicaciones as app}
+                <li>{app}</li>
+              {/each}
+            </ul>
+          </div>
+        {/if}
 
         <div class="tema-actions">
           <button on:click={() => { freeReview = true; freeOrder = cards.filter(c => c.tema === temaActivo.id || c.tema === temaActivo.nombre).map(c=>c.id).sort(()=>Math.random()-0.5); if (freeOrder.length) { cardIdx = cards.findIndex(c=>c.id===freeOrder[0]); active = 'flashcards'; showBack = false; } else { showToast('No hay flashcards de este tema', 'warning'); } }}>Practicar flashcards</button>
@@ -1508,6 +1436,40 @@
     display: flex;
     gap: 0.75rem;
     flex-wrap: wrap;
+  }
+  .tema-table-wrap {
+    overflow-x: auto;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+  .tema-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  .tema-table th {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    background: var(--surface-2);
+    color: var(--accent-warm);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  .tema-table td {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+  .tema-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+  .tema-table tbody tr:hover td {
+    background: rgba(96,165,250,0.05);
   }
 
   @media (max-width: 640px) {
