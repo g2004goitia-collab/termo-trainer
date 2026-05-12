@@ -2,12 +2,17 @@
   import { onMount } from 'svelte'
   import katex from 'katex'
   import { temas } from './data/temas.js'
-  let Plotly
-  async function getPlotly() {
-    if (!Plotly) {
-      Plotly = (await import('plotly.js-dist-min')).default
+  const Plotly = window.Plotly
+
+  function initPlot(node) {
+    if (active === 'simulador' && node) {
+      plotDiv = node
+      drawCycle()
     }
-    return Plotly
+    return {
+      update() { if (active === 'simulador' && node) drawCycle() },
+      destroy() { if (node) Plotly.purge(node) }
+    }
   }
 
   /* ─────────────── FLASHCARDS DATA ─────────────── */
@@ -199,7 +204,7 @@
   }
 
   async function drawBrayton() {
-    if (!plotDiv) return
+    if (!plotDiv || !Plotly) return
     const rp = simR, g = simGamma, Tcut = simRpCut
     const p1 = 1, p2 = p1 * rp, p3 = p2, p4 = p1
     const T1 = 300, T2 = T1 * Math.pow(rp, (g-1)/g), T3 = T2 * Tcut, T4 = T3 / Math.pow(rp, (g-1)/g)
@@ -244,7 +249,7 @@
   }
 
   async function drawDiesel() {
-    if (!plotDiv) return
+    if (!plotDiv || !Plotly) return
     const r = simR, g = simGamma, rc = simRpCut
     const v1 = 1, v2 = v1 / r, v3 = v2 * rc, v4 = v1
     const p1 = 1, p2 = p1 * Math.pow(r, g), p3 = p2
@@ -287,10 +292,11 @@
     ], baseLayout(`Ciclo Diesel — r=${r.toFixed(1)}, r_c=${rc.toFixed(1)}, γ=${g.toFixed(2)}, η=${(eta*100).toFixed(1)}%`), { responsive: true, displayModeBar: false })
   }
 
-  async function drawCycle() {
-    if (simCycle === 'otto') await drawOtto()
-    else if (simCycle === 'brayton') await drawBrayton()
-    else if (simCycle === 'diesel') await drawDiesel()
+  function drawCycle() {
+    if (!Plotly) return
+    if (simCycle === 'otto') drawOtto()
+    else if (simCycle === 'brayton') drawBrayton()
+    else if (simCycle === 'diesel') drawDiesel()
   }
 
   /* cards with SM-2 fields */
@@ -501,7 +507,7 @@
   $: dueCount = dueCards().length
   $: currentCard = cards[cardIdx] || null
   $: stats = getStats()
-  $: if (active === 'simulador' && plotDiv) drawCycle()
+  /* plot cycle drawn via initPlot action */
 </script>
 
 <header class="site-header">
@@ -782,7 +788,7 @@
         </div>
       </div>
 
-      <div class="plot-wrap" bind:this={plotDiv}></div>
+      <div class="plot-wrap" use:initPlot></div>
     </section>
 
   {:else if active === 'examen'}
